@@ -5,6 +5,7 @@ import { FOUNDATION_PAGES } from './foundations/FoundationPages'
 import { AssetsPage, hasAssets } from './foundations/AssetsPage'
 import { ComponentPage } from './components/ComponentPage'
 import { EXPORT_VERSION, sets, specs, warnings } from './theme/readSpecs'
+import { vars } from './theme/readTheme'
 import { ModesContext } from './modes'
 import type { Modes } from './modes'
 import type { PreviewConfig } from './types'
@@ -27,6 +28,15 @@ function loadModes(): Modes {
     return { theme: 'light' }
   }
 }
+
+/* The surface components sit on: the page's background and text roles, found by name in any file's theme
+ * (ui-background-default and ui-content-primary in Grebban's template, canvas-bg and ui-pri elsewhere).
+ * Drawn by .pv-stage, so each mode's values apply; config.stage overrides it with classes. */
+const PAGE = /^--color-(ui|canvas|page|app|global|surface)-/
+const find = (...res: RegExp[]) => res.map((re) => vars.find((v) => PAGE.test(v.name) && re.test(v.name))).find(Boolean)?.name
+const STAGE_BG = find(/-background-default$/, /-(bg|background)$/, /-background-/)
+const STAGE_FG = find(/-content-primary$/, /-text-primary$/, /-(content|text|fg|foreground)$/, /-content-default$/, /-pri(mary)?$/)
+const STAGE_CSS = `.pv-stage{${STAGE_BG ? `background-color:var(${STAGE_BG});` : ''}${STAGE_FG ? `color:var(${STAGE_FG});` : ''}}`
 
 // "[Client] Stylesheet": the client from the export (the Project Spec's Client line)
 const TITLE = specs.client ? `${specs.client} Stylesheet` : 'Stylesheet'
@@ -122,7 +132,8 @@ export function Preview({ config }: { config: PreviewConfig }) {
   )
 
   return (
-    <ModesContext.Provider value={{ ...modes, stage: config.stage }}>
+    <ModesContext.Provider value={{ ...modes, stage: config.stage || 'pv-stage' }}>
+      <style>{STAGE_CSS}</style>
       <div className="pv-app pv-shell" data-pv-mode={modes.theme === 'dark' ? 'dark' : 'light'}>
         {/* Below 768px: a top bar with a menu button; the Theme switch and nav sit in the menu */}
         <header className="pv-topbar flex h-14 shrink-0 items-center justify-between px-4">

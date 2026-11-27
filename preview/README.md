@@ -50,23 +50,16 @@ then any extra examples, and groups entries into sidebar pages by `page`.
 
 ```tsx
 export const config: PreviewConfig = {
-  title: 'Client preview',
-  // The area a component sits on: the project's own background and text roles, so it follows the Theme switch.
-  stage: 'bg-ui-background-default text-ui-content-primary',
-  components: [
-    {
-      page: 'Buttons',
-      name: 'Button/Primary',
-      states: ['Default', 'Hover', 'Pressed', 'Disabled'],
-      sizes: ['Md', 'Sm'],
-      render: ({ state, size }) => (
-        <ButtonPrimary size={size === 'Sm' ? 'sm' : 'md'} buttonLabel="Label" leftIcon="Plus" disabled={state === 'Disabled'} />
-      ),
-      examples: [{ label: 'Long text', render: () => <ButtonPrimary buttonLabel="Add to bag and continue" leftIcon="Plus" /> }],
-    },
-  ],
+  // Figma set name (as in specs.json) → its component. The preview draws the set's showcase and asks for one Cell at a time.
+  sets: {
+    'Button/Primary/Md': { page: 'Buttons', render: (c) => <ButtonPrimary size="md" disabled={c.state === 'Disabled'} /> },
+  },
+  // Optional: the surface components sit on. Left out, the preview finds the theme's background and text roles.
+  // stage: 'bg-ui-background-default text-ui-content-primary',
 }
 ```
+
+The title is *[Client] Stylesheet*, from the export's `client`.
 
 - **Hover**, **Pressed** and **Focus** are drawn by the preview: it sets `data-preview="hover"`, `"active"` or `"focus"` on the component's
   first link, button or tab, and `preview.css` makes that match the component's own `hover:`, `active:` and `focus-visible:` classes.

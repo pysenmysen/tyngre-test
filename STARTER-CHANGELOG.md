@@ -6,6 +6,7 @@ first; one line each.
 
 ## 2026-11-27
 
+- The preview finds the theme's background and text roles itself (ui-background-default, canvas-bg, ui-pri…); `stage` in preview.config.tsx is optional, for when it picks wrong.
 - Gradients & effects shows gradient stops named by opacity (100, 40, 0) as well as by name (soft, hard, transparent); Effects only when there are any.
 - Export warnings show on the page they're about: colours on Themes, icon sizes on Assets.
 - npm run starter:update brings in the starter's newest preview, scripts and rules.

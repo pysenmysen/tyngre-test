@@ -34,8 +34,9 @@ export type SetEntry = {
 }
 
 export type PreviewConfig = {
-  /** Classes for a surface components sit on: the project's own background and content roles, so each mode paints it. */
-  stage: string
+  /** Classes for the surface components sit on. Leave it out: the preview finds the theme's background and text
+   * roles itself. Set it only when it picks the wrong ones. */
+  stage?: string
   /** Figma set name (as in specs.json) → its component. Sets without an entry aren't shown. */
   sets: Record<string, SetEntry>
 }

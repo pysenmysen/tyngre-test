@@ -6,6 +6,5 @@
 import type { PreviewConfig } from '../preview/types'
 
 export const config: PreviewConfig = {
-  stage: 'bg-ui-background-default text-ui-content-primary',
   sets: {},
 }
