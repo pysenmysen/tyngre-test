@@ -6,11 +6,14 @@ readers ignore, or bump the version: `export` in specs.json, `v` in changes.json
 
 ## Export, version 2
 
-Foundations › Export › Download all gives `grebfig-export.zip`, its files at their places in
-the project. Unzip over the project after clearing the one folder that can lose files:
+Foundations › Export › Download all gives `[client]-grebfig-export.zip`, its files at their
+places in the project. `[client]` is specs.json's `client` without accents, lowercase, every
+run of other characters a `-` (`Åhléns City` → `ahlens-city`); with no client, just
+`grebfig-export.zip`. The starter's `npm run import` finds it, checks the client matches, and
+unzips it over the project after clearing the one folder that can lose files:
 
 ```bash
-rm -rf [project]/design/components && unzip -o ~/Downloads/grebfig-export.zip -d [project]
+rm -rf [project]/design/components && unzip -o ~/Downloads/[client]-grebfig-export.zip -d [project]
 ```
 
 | File | What it is |
@@ -30,12 +33,13 @@ No file but specs.json carries the version or the date, so a release changes onl
 ### specs.json
 
 ```json
-{ "export": 2, "grebfig": "1.30.0", "exported": "2026-11-27T06:32:04.659Z", "file": "[Figma file key]",
+{ "export": 2, "grebfig": "1.30.0", "exported": "2026-11-27T06:32:04.659Z", "file": "[Figma file key]", "client": "[Client]",
   "specs": [], "sets": [], "layout": {}, "names": {}, "fromCode": [], "warnings": [] }
 ```
 
 - `export`: this format's version. A reader that doesn't know it stops and says so.
 - `file`: the Figma file key, for the MCP.
+- `client`: the Project Spec's Client line, else the Figma file's name. The preview's title.
 - `specs[]`: each exported Spec: `name`, `file` (`foundations.md`, `assets.md` or
   `components.md`), `slice` (its file in `design/components/`, components only), `id`,
   `hash` (of its exported text), `page`, `stale` (Figma's Spec is behind the template).
