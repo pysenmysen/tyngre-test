@@ -71,11 +71,16 @@ export function Preview({ config }: { config: PreviewConfig }) {
   }, [page, section])
 
   const current = pages.find((p) => p.id === page)!
-  // specs.json › warnings, on the page of the set they name ("button/primary" → Buttons); the rest on the first page
+  // specs.json › warnings, on the page of the set they name ("button/primary" → Buttons), colours on Themes,
+  // icons on Assets; the rest on the first page
   const warningPage = (w: unknown) => {
     const text = (typeof w === 'string' ? w : JSON.stringify(w)).toLowerCase()
     const set = sets.find((s) => config.sets[s.name] && text.includes(s.name.toLowerCase().split('/').slice(0, 2).join('/')))
-    return set ? slug(config.sets[set.name].page) : pages[0].id
+    if (set) return slug(config.sets[set.name].page)
+    // A colour pair that can't be read is a theme's; an icon drawn at the wrong size is the assets'
+    if (text.includes('content and fill')) return 'themes'
+    if (text.includes(' placed at ') && pages.some((p) => p.id === 'assets')) return 'assets'
+    return pages[0].id
   }
   const shownWarnings = warnings.filter((w) => warningPage(w) === page)
     .map((w) => (typeof w === 'string' ? w : (w as { message?: string; text?: string }).message ?? (w as { text?: string }).text ?? JSON.stringify(w)))

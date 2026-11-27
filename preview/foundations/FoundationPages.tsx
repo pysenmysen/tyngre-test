@@ -215,9 +215,11 @@ function Effects() {
   const { stage = '' } = useModes()
   const stops = bySection.effects.filter((x) => seg(x.name, 0) === 'color')
   const shadows = bySection.effects.filter((x) => seg(x.name, 0) !== 'color')
-  const end = stops.find((x) => last(x) === 'transparent')
-  // Gradient/[Stop], fading to the transparent stop; Soft before Hard, as Figma orders them
-  const styles = stops.filter((x) => x !== end).sort((a, b) => last(b).localeCompare(last(a)))
+  // Stops by name (soft, hard, transparent) or by opacity (100, 40, 0): each fades to the clear one
+  const num = (x: Var) => (/^\d+$/.test(last(x)) ? Number(last(x)) : null)
+  const end = stops.find((x) => last(x) === 'transparent') ?? stops.filter((x) => num(x) !== null).sort((a, b) => num(a)! - num(b)!)[0]
+  // Soft before Hard, as Figma orders them; numbers from the most opaque down
+  const styles = stops.filter((x) => x !== end).sort((a, b) => (num(a) !== null && num(b) !== null ? num(b)! - num(a)! : last(b).localeCompare(last(a))))
   const textures = plainUtilities.filter((u) => u.name.startsWith('texture-'))
   const tile = 'pv-backdrop relative block aspect-square'
   return (
@@ -239,7 +241,7 @@ function Effects() {
                 </div>
               </div>
             ))}
-            <div className="grid gap-2">
+            {(shadows.length > 0 || textures.length > 0) && <div className="grid gap-2">
               <p>Effects</p>
               <div className="grid grid-cols-4 gap-2">
                 {shadows.map((x) => (
@@ -255,7 +257,7 @@ function Effects() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div>}
           </div>
         ))}
       </div>

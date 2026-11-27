@@ -18,7 +18,9 @@ v4. No other libraries. Project-specific notes and decisions are in `PROJECT.md`
   `npm run dev` serves the preview on port 5175. `npm run check` lints, type-checks and runs
   the design check.
 
-Work only from Figma's MCP and the export in this folder.
+Work only from Figma's MCP and the export in this folder. Don't edit `preview/`, `scripts/` or this file:
+`npm run starter:update` replaces them. A fix they need goes to the greb-starter repo; a
+project's own rules go in `PROJECT.md`.
 
 ## Rules for every component
 

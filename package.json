@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "design:check": "node scripts/design-check.mjs",
     "check": "oxlint && tsc -b && node scripts/design-check.mjs",
-    "import": "node scripts/import.mjs"
+    "import": "node scripts/import.mjs",
+    "starter:update": "node scripts/starter-update.mjs"
   },
   "dependencies": {
     "react": "^19.3.1",
