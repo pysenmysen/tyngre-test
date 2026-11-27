@@ -87,7 +87,7 @@ Gradients, shadows and textures, each a style.
 
 ### In code
 
-- A gradient is its stops' theme colours (`from-gradient-hard to-gradient-transparent`), not a fixed image.
+- A gradient style is a `bg-[style]` utility in theme.css (`Gradient/Hard/Down` is `bg-gradient-hard-down`): its stops are theme colours, so it follows the mode. Never a fixed image.
 - A texture (`Texture/Noise`) is a `texture-[name]` utility: an `::after` over the surface with the noise as an SVG. Close to Figma's, not the same.
 
 ---
@@ -173,7 +173,7 @@ Motion is a set of presets, each a curve and a duration. Timings are how long so
 
 ### In code
 
-- A preset is a `transition` (or `animation`): `duration-(--duration-[name]) ease-[name]`.
+- A preset is a `transition` (or `animation`): `duration-[name] ease-[name]`. GrebFig's export writes a `duration-[name]` utility for each preset, since Tailwind has no duration namespace.
 - A transition belongs to the state it lands on: the base and `:hover` take Hover's preset, `:active` takes Pressed's. Releasing a press uses Hover's.
 - `prefers-reduced-motion: reduce` sets every duration to 0. Opacity transitions are kept; motion stops.
 

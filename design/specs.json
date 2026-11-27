@@ -1,7 +1,7 @@
 {
  "export": 2,
  "grebfig": "1.30.0",
- "exported": "2026-11-27T07:53:44.474Z",
+ "exported": "2026-11-27T08:39:10.440Z",
  "file": "hOfLNXG93QJ7u9VCWLrfMU",
  "client": "Tyngre [Internal]",
  "specs": [
@@ -30,7 +30,7 @@
    "name": "Gradients & effects",
    "file": "foundations.md",
    "id": null,
-   "hash": "1467712689",
+   "hash": "1444536798",
    "stale": false
   },
   {
@@ -65,7 +65,7 @@
    "name": "Motion & interaction",
    "file": "foundations.md",
    "id": null,
-   "hash": "2516952837",
+   "hash": "2904906861",
    "stale": false
   },
   {
@@ -405,7 +405,15 @@
   "--text-misc-12-100": "Misc/12_100",
   "--text-misc-12-100-500": "Misc/12_100_500",
   "--text-misc-10-100-500": "Misc/10_100_500",
-  "--text-misc-10-100": "Misc/10_100"
+  "--text-misc-10-100": "Misc/10_100",
+  "bg-gradient-soft-down": "Gradient/Soft/↓",
+  "bg-gradient-soft-left": "Gradient/Soft/←",
+  "bg-gradient-soft-right": "Gradient/Soft/→",
+  "bg-gradient-soft-up": "Gradient/Soft/↑",
+  "bg-gradient-hard-down": "Gradient/Hard/↓",
+  "bg-gradient-hard-left": "Gradient/Hard/←",
+  "bg-gradient-hard-right": "Gradient/Hard/→",
+  "bg-gradient-hard-up": "Gradient/Hard/↑"
  },
  "fromCode": [],
  "warnings": [

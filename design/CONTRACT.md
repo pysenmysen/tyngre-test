@@ -18,7 +18,7 @@ rm -rf [project]/design/components && unzip -o ~/Downloads/[client]-grebfig-expo
 
 | File | What it is |
 |---|---|
-| `src/theme.css` | Every variable and mode, as Tailwind 4 `@theme` plus a block per mode (`[data-theme="dark"]`). Text styles, effects, textures and the scroll bar as utilities and base rules. Never edited by hand. |
+| `src/theme.css` | Every variable and mode, as Tailwind 4 `@theme` plus a block per mode (`[data-theme="dark"]`). Text styles, gradient styles (`bg-[style]`), effects, textures, durations and the scroll bar as utilities and base rules. Never edited by hand. |
 | `design/components/[name].md` | One component Spec. `[name]` is its Figma name, lowercase, `-` for `/` and spaces. The first line is a comment: the Spec's id, each set's name and id, and `Uses:` the files of the components it contains. |
 | `design/foundations.md` | The shared Specs (Code, the foundations, the type Specs such as Buttons), `#` heading per Spec. |
 | `design/assets.md` | Brand assets, and the list of icons and images. |
