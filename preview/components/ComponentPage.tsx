@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
-import { byName, refsOf, vars } from '../theme/readTheme'
+import { byName, DEFAULT_THEME, refsOf, vars } from '../theme/readTheme'
 import { names } from '../theme/readSpecs'
 import type { SetSpec } from '../theme/readSpecs'
 import { useBlock, useModes } from '../modes'
@@ -148,7 +148,7 @@ function SpecSection({ items, folds }: { items: Item[]; folds: Folds }) {
         </div>
       )}
 
-      {fold('states', 'States', statesRow('light'))}
+      {fold('states', 'States', statesRow(DEFAULT_THEME))}
       {(sc.modes ?? []).map((m) => fold(m, m, statesRow(m.toLowerCase())))}
 
       {sc.behaviour && sc.behaviour.length > 0 && fold('behaviour', 'Behaviour', (

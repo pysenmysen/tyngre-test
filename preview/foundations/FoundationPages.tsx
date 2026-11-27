@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import {
   bySection, byName, figmaName, media, mediaRules, percent, plainUtilities, px, scrollbarStyled, refsOf, resets, seg, styleUtility,
-  switchModes, themeModes,
+  DEFAULT_THEME, switchModes, themeModes,
 } from '../theme/readTheme'
 import type { SectionId, Utility, Var } from '../theme/readTheme'
 import { useBlock, useModes } from '../modes'
@@ -90,10 +90,10 @@ function Swatch({ background, className = 'aspect-square w-full' }: { background
 
 // --- Modes (for the Themes rows) --------------------------------------------------------------------------
 
-// Light is the base; a [data-theme="light"] block in theme.css (the first mode, so the default) is the same column.
+// The default mode is the base: its own [data-theme] block (the first in theme.css) is the same column, so it's shown once.
 const MODES = [
-  { id: 'light', label: 'Light (default)', decls: themeModes.find((m) => m.value === 'light')?.decls ?? new Map<string, string>() },
-  ...themeModes.filter((m) => m.value !== 'light').map((m) => ({ id: m.value, label: cap(m.value), decls: m.decls })),
+  { id: DEFAULT_THEME, label: `${cap(DEFAULT_THEME)} (default)`, decls: themeModes.find((m) => m.value === DEFAULT_THEME)?.decls ?? new Map<string, string>() },
+  ...themeModes.filter((m) => m.value !== DEFAULT_THEME).map((m) => ({ id: m.value, label: cap(m.value), decls: m.decls })),
 ]
 type Mode = (typeof MODES)[number]
 const valueIn = (name: string, mode: Mode) => mode.decls.get(name) ?? byName.get(name)?.value ?? ''
@@ -190,9 +190,9 @@ function Themes() {
               <div key={x.name} className="pv-mode-row pv-row">
                 <span>{breakAtSlash(figmaName(x))}</span>
                 {MODES.map((m) => (
-                  <span key={m.id} data-theme={m.id === 'light' ? undefined : m.id} className={`pv-mode-cell ${stage}`}>
+                  <span key={m.id} data-theme={m.id === DEFAULT_THEME ? undefined : m.id} className={`pv-mode-cell ${stage}`}>
                     <Swatch background={v(x.name)} className="size-4" />
-                    <span className={`min-w-0 ${m.id === 'light' || m.decls.has(x.name) ? '' : 'pv-muted'}`}>{breakAtSlash(pointsTo(x.name, m))}</span>
+                    <span className={`min-w-0 ${m.id === DEFAULT_THEME || m.decls.has(x.name) ? '' : 'pv-muted'}`}>{breakAtSlash(pointsTo(x.name, m))}</span>
                   </span>
                 ))}
               </div>

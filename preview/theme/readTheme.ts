@@ -85,6 +85,8 @@ export const refsOf = (value: string) => [...value.matchAll(/var\((--[a-zA-Z0-9_
 // Colour modes are data-theme; any other attribute is a switch (Foundations › Switches).
 export const themeModes = modes.filter((m) => m.attr === 'data-theme')
 export const switchModes = modes.filter((m) => m.attr !== 'data-theme')
+// The default colour mode: the export writes it first (Light, Default-light…), its values also on :root
+export const DEFAULT_THEME = themeModes[0]?.value ?? 'light'
 
 // A variable the mode doesn't set, but whose var() points at one it does, keeps its :root value inside the mode:
 // custom properties resolve var() where they're declared, and children inherit the result.

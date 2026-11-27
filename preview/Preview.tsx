@@ -1,11 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { ComponentType } from 'react'
-import { themeModes } from './theme/readTheme'
+import { DEFAULT_THEME, themeModes, vars } from './theme/readTheme'
 import { FOUNDATION_PAGES } from './foundations/FoundationPages'
 import { AssetsPage, hasAssets } from './foundations/AssetsPage'
 import { ComponentPage } from './components/ComponentPage'
 import { EXPORT_VERSION, sets, specs, warnings } from './theme/readSpecs'
-import { vars } from './theme/readTheme'
 import { ModesContext } from './modes'
 import type { Modes } from './modes'
 import type { PreviewConfig } from './types'
@@ -15,7 +14,7 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(
 
 // Theme: Light (no attribute) and every [data-theme] mode in theme.css.
 // The base (no attribute) is Light unless theme.css names a light mode itself.
-const THEMES = [...new Set(['light', ...themeModes.map((m) => m.value)])]
+const THEMES = [...new Set([DEFAULT_THEME, ...themeModes.map((m) => m.value)])]
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 // The Theme switch is a per-viewer convenience: kept in localStorage when it's there.
@@ -23,9 +22,9 @@ const STORE = 'grebfig-preview-modes'
 function loadModes(): Modes {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) ?? 'null') as Modes | null
-    return { theme: saved && THEMES.includes(saved.theme) ? saved.theme : 'light' }
+    return { theme: saved && THEMES.includes(saved.theme) ? saved.theme : DEFAULT_THEME }
   } catch {
-    return { theme: 'light' }
+    return { theme: DEFAULT_THEME }
   }
 }
 

@@ -6,6 +6,7 @@ first; one line each.
 
 ## 2026-11-27
 
+- The default colour mode is the theme's first, whatever it's called (Light, Default-light…): shown once in Themes and the Theme switch, not as a second Light column.
 - Gradients & effects draws the file's gradient styles from the export (`bg-[style]` utilities), named and grouped as in Figma (Gradient/Soft, ↓ ← → ↑). Exports from before GrebFig adds them still show each stop fading to the clear one.
 - AGENTS.md: build one type per session or subagent, shared pieces first; fetch a composite on one variant once its parts are built; check the preview with read_page and computed styles, one screenshot per type; print one set's showcase instead of reading specs.json.
 - A new project's preview.config.tsx has one example per kind of showcase.
