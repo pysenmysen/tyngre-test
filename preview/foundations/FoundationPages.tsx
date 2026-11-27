@@ -8,7 +8,7 @@ import {
   bySection, byName, figmaName, media, mediaRules, percent, plainUtilities, px, scrollbarStyled, refsOf, resets, seg, styleUtility,
   switchModes, themeModes,
 } from '../theme/readTheme'
-import type { SectionId, Var } from '../theme/readTheme'
+import type { SectionId, Utility, Var } from '../theme/readTheme'
 import { useBlock, useModes } from '../modes'
 import { layout, names as figmaNames } from '../theme/readSpecs'
 
@@ -221,6 +221,10 @@ function Effects() {
   // Soft before Hard, as Figma orders them; numbers from the most opaque down
   const styles = stops.filter((x) => x !== end).sort((a, b) => (num(a) !== null && num(b) !== null ? num(b)! - num(a)! : last(b).localeCompare(last(a))))
   const textures = plainUtilities.filter((u) => u.name.startsWith('texture-'))
+  // The file's gradient styles, exported as bg-[name] utilities: Gradient/Soft/↓ in group Gradient/Soft, as Figma names them
+  const exported = plainUtilities.filter((u) => /gradient\(/.test(u.body))
+  const groupOf = (u: Utility) => (figmaNames[u.name] ?? u.name).split('/').slice(0, -1).join('/')
+  const groups = [...new Set(exported.map(groupOf))]
   const tile = 'pv-backdrop relative block aspect-square'
   return (
     <Section id="effects">
@@ -228,7 +232,21 @@ function Effects() {
         {MODES.map((m) => (
           <div key={m.id} data-theme={m.id} className={`${stage} grid content-start gap-4 p-4`}>
             <p className="pv-label">{m.label}</p>
-            {end && styles.map((x) => (
+            {groups.map((g) => (
+              <div key={g} className="grid gap-2">
+                <p>{g}</p>
+                <div className="grid grid-cols-4 gap-2">
+                  {exported.filter((u) => groupOf(u) === g).map((u) => (
+                    <div key={u.name} className="grid gap-1">
+                      <span className={tile}><span className="absolute inset-0" style={{ backgroundImage: u.decls.find(([k]) => k === 'background-image')?.[1] }} /></span>
+                      <span className="pv-muted">{(figmaNames[u.name] ?? u.name).split('/').pop()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+            {/* Without gradient styles in the export: each stop fading to the clear one */}
+            {!exported.length && end && styles.map((x) => (
               <div key={x.name} className="grid gap-2">
                 <p>Gradient/{cap(last(x))}</p>
                 <div className="grid grid-cols-4 gap-2">

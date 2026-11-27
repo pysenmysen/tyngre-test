@@ -22,7 +22,7 @@ try { git('fetch', '-q', REPO, ref); } catch (e) { console.error(`Couldn't fetch
 
 // What's new: the starter's changelog lines this project doesn't have yet
 const local = existsSync(join(root, 'STARTER-CHANGELOG.md')) ? readFileSync(join(root, 'STARTER-CHANGELOG.md'), 'utf8') : '';
-const news = has('STARTER-CHANGELOG.md') ? git('show', 'FETCH_HEAD:STARTER-CHANGELOG.md').split('\n').filter((l) => /^- /.test(l) && !local.includes(l)) : [];
+const news = has('STARTER-CHANGELOG.md') ? git('show', 'FETCH_HEAD:STARTER-CHANGELOG.md').split('\n').filter((l) => l.startsWith('- ') && !local.includes(l)) : [];
 
 for (const d of DIRS) if (has(d)) { rmSync(join(root, d), { recursive: true, force: true }); git('checkout', 'FETCH_HEAD', '--', d); }
 for (const f of FILES) if (has(f)) git('checkout', 'FETCH_HEAD', '--', f);

@@ -28,7 +28,9 @@ project's own rules go in `PROJECT.md`.
    `design/components/` ("Figma: Spec …, Input/Select: set …"). A build doesn't need
    `specs.json`; don't find sets through a section's overview.
 2. Call `get_design_context` on each set you build: that's the only MCP call a component
-   needs.
+   needs. A set whose `Uses:` files are already built: call it on one variant (Default, closed,
+   from `get_metadata` on the set), not on the whole set, and take the parts it contains from their
+   own code. A set's own states are in its Spec's States table.
 3. A component's Spec is its file in `design/components/`. Read that file and the files in
    its `Uses:` line, nothing else from there. Never read `components.md` whole. In
    `design/foundations.md`, read only the sections the Spec names, such as Code or the type
@@ -44,9 +46,29 @@ project's own rules go in `PROJECT.md`.
 7. Icons come from `src/assets/icons/` (`[name]-[size].svg`, drawn in `currentColor`, one
    file per size), placed with the one `Icon` component. Never draw paths, and never
    download the MCP's coloured copies of an icon.
-8. Add each built set to `src/preview.config.tsx`, so the preview shows it.
+8. Add each built set to `src/preview.config.tsx`, so the preview shows it. Its comment has
+   one example per kind of showcase. Print only that set's showcase, never read
+   `design/specs.json` whole:
+   `node -p "JSON.stringify(require('./design/specs.json').sets.find((s) => s.name === 'Input/Select').showcase)"`.
 9. Something missing, unclear or contradictory in a Spec goes in PROJECT.md › Open
    questions, quoting the line. Don't guess silently.
+
+## Building many components
+
+Every tool call re-sends the whole conversation, so a long one costs more with every step.
+
+1. One session or subagent per type (Buttons, Links, Tabs, Accordions, Breadcrumbs, Inputs, and
+   so on): it reads only that type's Specs, its foundations sections and its sets.
+2. Build what several types share first, in the first session: Icon, the focus ring, a field's
+   container, a list's keyboard behaviour. Later sessions import it and don't rebuild it.
+3. The session that hands out the types reads no Specs and fetches no sets. It runs
+   `npm run check` at the end.
+
+## Checking in the preview
+
+Check a component with text, not pixels: `read_page` for its structure and text, a
+`javascript_tool` call on `getComputedStyle` for a colour, size or transition. Take one
+screenshot per type when it's done, not one per state.
 
 ## Updating after a new export
 
